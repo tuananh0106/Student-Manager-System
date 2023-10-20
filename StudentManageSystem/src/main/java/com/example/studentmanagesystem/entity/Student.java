@@ -1,40 +1,43 @@
 package com.example.studentmanagesystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name="students")
+@Table(name = "students")
 @Data
-public class  Student {
-
-    public Student() {
-    }
-
-    public Student(String firstName, String lastName, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-    }
-
+@AllArgsConstructor
+@NoArgsConstructor
+public class Student {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)//muốn tạo ra chiến thuật tự tăng thực hiện
-                                                        // GeneratedValue với strategy là chiến thuật
-                                                        // và generation.identity là giá trị tăng lên 1 đơn vị
+    @Column(name = "id")
     private Long id;
 
-    @Column(name="first_name",nullable = false) //muốn nói đển cột nào đó thực hiện sử dụng anotation column
-                                                //để tên của cột đó ở name
-                                                // xét giá trị đó là notnull trong db bằng nullable=false
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name="last_name",nullable = false)
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name="email",nullable = false)
+    @Column(name = "email")
     private String email;
 
+    @Column(name = "sex")
+    private String sex;
+
+    @Column(name = "date_of_birth")
+    @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime dateOfBirth;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinColumn(name = "classroom_id")
+    private Classroom classroom;
 }

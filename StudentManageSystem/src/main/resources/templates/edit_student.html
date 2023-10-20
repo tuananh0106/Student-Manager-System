@@ -6,7 +6,8 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Student Management System</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
 <!--Start : Header    -->
@@ -39,10 +40,6 @@
                 <form th:action="@{/students/{id} (id=${student.id})}" th:object="${student}" method="post">
                     <div class="form-group">
                         <label>Student First Name</label>
-                        <!-- Cái th:field phải thực hiện sao cho trùng với lớp của Student trong class Controller
-                        thuộc tính firstName phải có tên giống với thuộc tính trong thực thể Student
-                        với thuộc tính phải sử dụng là *{}
-                        -->
                         <input type="text"
                                name="firstName"
                                th:field="*{firstName}"
@@ -68,9 +65,41 @@
                                placeholder="Enter Student Email"/>
                     </div>
 
+                    <div class="form-group">
+                        <label>Date Of Birth</label>
+                        <input type="datetime-local"
+                               name="dateOfBirth"
+                               th:field="*{dateOfBirth}"
+                               class="form-control"
+                               placeholder="Enter Date Of Birth"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Sex: </label>
+                        <div th:each="option : ${T(com.example.studentmanagesystem.enums.GenderOption).values()}">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input name="gender" type="radio" th:field="*{sex}" th:value="${option}"
+                                       class="custom-control-input" required>
+                                <label class="custom-control-label" th:for="${#ids.prev('sex')}" th:text="${option}">option</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Classroom: </label>
+                        <div th:each="classroom : ${classroomList}">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input name="classroom" type="radio" th:field="*{classroom}"
+                                       th:value="${classroom.getId()}" class="custom-control-input" required>
+                                <label class="custom-control-label" th:for="${#ids.prev('classroom')}"
+                                       th:text="${classroom.getName()}">classroom</label>
+                            </div>
+                        </div>
+                    </div>
+
 
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary"> Submit </button>
+                        <button type="submit" class="btn btn-primary"> Submit</button>
                     </div>
                 </form>
             </div>
